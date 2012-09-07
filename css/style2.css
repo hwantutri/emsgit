@@ -1,0 +1,4 @@
+.button				{ background: url(../images/button-bg.png) repeat-x top center; border: 1px solid #999;
+					  -moz-border-radius: 5px; padding: 4px; color: black; font-weight: bold;
+					  -webkit-border-radius: 5px; font-size: 13px;  width: 100px; }
+.button:hover		{ background: white; color: black; }
