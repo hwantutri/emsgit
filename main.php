@@ -17,7 +17,30 @@ if($_GET['q'] == 'logout'){
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<p align="right"><font size="2" color="white">You are logged in as </font><font size="2" color="blue"> <u> <?php $login->get_name($uid);?></u>&nbsp;|&nbsp; <a href="?q=logout"> Log out </a>&nbsp&nbsp;</font></p>
+<script>
+
+
+
+function sayKeyCode(event, v){
+        var textbox = document.getElementById('wtime');
+        if(event.keyCode != 6){
+            if (textbox.value.length == 2 && textbox.value.length != 3)
+            {
+                textbox.value = textbox.value + ":";
+            }
+            else if(textbox.value.length == 5)
+            {
+                textbox.value = textbox.value + ":";
+            }
+            else
+            {
+                textbox.value = textbox.value;
+            }
+        }
+    }
+</script>
+
+<p align="right"><font size="2" color="white">You are logged in as </font><font size="2" color="blue"> <u> <?php $login->get_name($uid);?></u>&nbsp;|&nbsp; <a href="?q=logout"><font color="red"> Log out </font></a>&nbsp&nbsp;</font></p>
 <h1><b><font color="white">MAGNUM Computer Sales and Services</font></b></h1>
 	<title>MAGNUM | Main</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -85,8 +108,8 @@ if($_GET['q'] == 'logout'){
             </ul>
 		</div>
 		<div id="ems">
-			<h2>Welcome <font color="blue"><i><?php $login->get_name($uid); ?></i></font>!</h2>
-                <p>&nbsp&nbsp&nbsp;The <b>MAGNUM Employee Management System</b> will be able you to do the following tasks:
+			<h2><font color="blue">Welcome <i><?php $login->get_name($uid); ?></i>!</font></h2>
+                <p>&nbsp&nbsp&nbsp;The <b>MAGNUM Employee Management System</b> allows you to do the following tasks:
 			<ul>
 				<li><b>Assignments	:</b> Add new assigments.</li>
 				<li><b>Status	:</b>  View assignment and service crew current status. </li>
@@ -104,22 +127,22 @@ if($_GET['q'] == 'logout'){
 							<tr>
 								<td>Date</td>
 								<td>:</td>
-								<td><input type="text" id="wdate"  class="wdate" name="wdate" value='<?php echo date("Y-m-d"); ?>'  />(required)</td>
+								<td><input type="text" id="wdate" placeholder="Date" class="wdate" name="wdate" value='<?php echo date("Y-m-d"); ?>'  />(required)</td>
 							</tr>
 							<tr>
 								<td>Time</td>
 								<td>:</td>
-								<td><input type="text" name="wtime" id="wtime" value="00:00:00"/>(blank for anytime, 24-hour format)</td>
+								<td><input maxlength="8" type="text" placeholder="Time" name="wtime" id="wtime" value="00:00:00" onkeyup="sayKeyCode(event,this.value);"/>(blank for anytime, 24-hour format)</td>
 							</tr>
 							<tr>
 								<td>Description</td>
 								<td>:</td>
-								<td><input type="text" id="wdesc"  class="wdesc" name="wdesc" autofocus/>(required)</td>
+								<td><input type="text" id="wdesc" placeholder="Description"  class="wdesc" name="wdesc" autofocus/>(required)</td>
 							</tr>
 							<tr>
 								<td>Client</td>
 								<td>:</td>
-								<td><input type="text" name="client" id="client"/>(required)</td>
+								<td><input type="text" name="client" placeholder="Client" id="client"/>(required)</td>
 							</tr>
 							<tr>
 								<td></td><td></td>
@@ -163,7 +186,7 @@ if($_GET['q'] == 'logout'){
 									<td>:</td>
 								</label>
 									<td>
-										<input type="text" id="crewid" name="crewid"/>
+										<input type="text" id="crewid" name="crewid" placeholder="Crew ID"/>
 									</td>	
 								</tr>
 								<tr>
@@ -172,7 +195,7 @@ if($_GET['q'] == 'logout'){
 									<td>:</td>
 								</label>
 									<td>
-										<input type="text" id="auto" name="auto"/>
+										<input type="text" id="auto" name="auto" placeholder="Assignment Name"/>
 									</td>
 								</tr>
 								<tr>
@@ -196,7 +219,7 @@ if($_GET['q'] == 'logout'){
 					<div id="assignrep">
 					<div class="tablecontainer">
 					<h2>Generate Assignments Report</h2>
-					<form action="pdfpreview2.php" method="post">
+					<form action="pdfpreview2.php" method="post" target="new_tab">
 							<table border="0">
 								<tr>
 								<label>
@@ -205,7 +228,7 @@ if($_GET['q'] == 'logout'){
 								</label>
 									<td>
 										<select name="statusselect">
-											<option selected></option>
+											<!--<option selected></option>-->
 											<option value="AVAILABLE">Available</option>
 											<option value="ASSIGNED">Assigned</option>
 											<option value="all">All</option>
@@ -213,9 +236,19 @@ if($_GET['q'] == 'logout'){
 									</td>	
 								</tr>
 								<tr>
+								<label>
+									<td>Date</td>
+									<td>:</td>
+								</label>
+									<td>
+										<input type="text" id="new_date" name="new_date" value="<?php echo date("Y-m-d"); ?>">
+									</td>	
+								</tr>
+
+								<tr>
 									<td></td><td></td>
 									<td>
-										<input type="submit" style="margin: 20px 0 0 0;" class="button" id="genbutton" name="submitbutton" value="    Generate    " />
+										<input type="submit" style="margin: 20px 0 0 0;" class="button" id="genbutton" name="submitbutton" value="    Generate    "/>
 									</td>
 								</tr>
 							</table>
@@ -225,7 +258,7 @@ if($_GET['q'] == 'logout'){
 					<div id="crewrep">
 					<div class="tablecontainer">
 					<h2>Generate Crew Workload Report </h2>
-					<form action="pdfpreview.php" method="post">
+					<form action="pdfpreview.php" method="post" target="new_tab">
 							<table border="0">
 								<tr>
 								<label>
@@ -233,9 +266,19 @@ if($_GET['q'] == 'logout'){
 									<td>:</td>
 								</label>
 									<td>
-										<input type="text" id="crewid2" name="crewid2"/>
+										<input type="text" id="crewid2" name="crewid2" placeholder="Crew ID"/>
 									</td>	
 								</tr>
+								<tr>
+								<label>
+									<td>Date</td>
+									<td>:</td>
+								</label>
+									<td>
+										<input type="text" id="new_date2" name="new_date2" value="<?php echo date("Y-m-d"); ?>">
+									</td>	
+								</tr>
+								
 								<tr>
 									<td></td><td></td>
 									<td>

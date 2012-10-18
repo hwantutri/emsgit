@@ -23,6 +23,40 @@
 		}
 	});
 	
+	$('#new_date').DatePicker({
+	//format:'Y-m-d',
+	date: $('#new_date').val(),
+	current: $('#new_date').val(),
+	starts: 0,
+	//position: 'right',
+	onBeforeShow: function(){
+				$('#new_date').DatePickerSetDate($('#new_date').val(), true);
+			//	notify(vdate,'Please wait');
+			},
+	onChange: function(formated, dates){
+		$('#new_date').val(formated);
+		$('#new_date').DatePickerHide();
+		var wdate = $("#new_date").val();
+		}
+	});
+	
+	$('#new_date2').DatePicker({
+	//format:'Y-m-d',
+	date: $('#new_date2').val(),
+	current: $('#new_date2').val(),
+	starts: 0,
+	//position: 'right',
+	onBeforeShow: function(){
+				$('#new_date2').DatePickerSetDate($('#new_date2').val(), true);
+			//	notify(vdate,'Please wait');
+			},
+	onChange: function(formated, dates){
+		$('#new_date2').val(formated);
+		$('#new_date2').DatePickerHide();
+		var wdate = $("#new_date2").val();
+		}
+	});
+	
 	$("#submitbtn").click(function(e){ 
         	e.preventDefault();
 		var sclient = $.trim($("#client").val());
@@ -45,12 +79,11 @@
 			notify2('Error:','Both fields are required');
 		}
 		else if (crid.length > 0){
-			$.post("check.php", {crid : crid}, function(data){
-				data = $.trim(data);
-				if (data.length==7){ 
+			$.post("check.php?crid="+crid, function(data){
+				if (data=='genesis'){ 
 					assign(crid);
 				}
-				else if (data.length == 1){
+				else if (data=='g'){
 					notify3('Error:','Enter a valid crew ID');
 				}
 			});
@@ -87,7 +120,7 @@
 				$("#crewid").val("");
           		}
 				else if (data.length == 1){
-				notify3('Error:','Assignment is unavailable. Please try reloading the page');
+				notify3('Error:','Assignment is unavailable');
 				$("#auto").val("");
 				}
 				else if (data.length == 2){
@@ -96,7 +129,7 @@
         });
 		}
 			else{
-				notify2('Error:','Enter assignment name');
+				notify2('Error:','Enter an assignment name');
 			}
 	};
 	
@@ -104,11 +137,11 @@
 		var notice = 	
 			'<div class="notice">'
 			+ '<div class="notice-body">' 
-			+ '<img src="./images/success_baby.jpg" alt="" />'
-			+ '<h3>' + heading + '</h3>'
-			+ '<p>' + msg + '</p>'
+			+ '<img src="./images/success.png" alt="" />'
+			+ '<h3 >' + heading + '</h3>'
+			+ '<p><font color="white">' + msg + '</font></p>'
 			+ '</div>'
-			+ '<div class="notice-bottom">'
+			+ '<div color="white" class="notice-bottom">'
 			+ '</div>'
 			+ '</div>';
 
@@ -122,9 +155,9 @@
 		var notice = 	
 			'<div class="notice">'
 			+ '<div class="notice-body">' 
-			+ '<img src="./images/one-does-not-simply.jpg" alt="" />'
+			+ '<img src="./images/error.png" alt="" />'
 			+ '<h3>' + heading + '</h3>'
-			+ '<p>' + msg + '</p>'
+			+ '<p><font color="white">' + msg + '</font></p>'
 			+ '</div>'
 			+ '<div class="notice-bottom">'
 			+ '</div>'
@@ -140,9 +173,9 @@
 		var notice = 	
 			'<div class="notice">'
 			+ '<div class="notice-body">' 
-			+ '<img src="./images/you-shall-not-pass2.jpg" alt="" />'
+			+ '<img src="./images/error.png" alt="" />'
 			+ '<h3>' + heading + '</h3>'
-			+ '<p>' + msg + '</p>'
+			+ '<p><font color="white">' + msg + '</font></p>'
 			+ '</div>'
 			+ '<div class="notice-bottom">'
 			+ '</div>'

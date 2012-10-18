@@ -5,6 +5,7 @@
   $db = new Database();
   
   $status = $_POST['statusselect'];
+  $date = $_POST['new_date'];
 
   //Create PDF instance
   $pdf = new Cezpdf($paper='FOLIO',$orientation='landscape');
@@ -22,26 +23,26 @@
   $pdf->ezText('',12);
   
   if($status=='AVAILABLE'){
-  $result = mysql_query("SELECT * from workload where wstatus='$status'");
+  $result = mysql_query("SELECT * from workload where wstatus='$status' and workload.wtime like '%$date%'");
   while($row=mysql_fetch_object($result)) {
 	$data[$row->wid]['ID']=$row->wid;
 	$data[$row->wid]['DESCRIPTION']=$row->wdescription;
 	$data[$row->wid]['CLIENT']=$row->wclient;
 	$data[$row->wid]['DATE AND TIME']=$row->wtime;
-	$data[$row->wid]['TOTAL']='';
+	$data[$row->wid]['TOTAL TRANSACTIONS']='';
   }
   }
   else if($status=='ASSIGNED'){
   $result = mysql_query("SELECT workload.wid as id, workload.wdescription as descr, workload.wclient as client,
 						workload.wtime as time, assignment.crew_id as assigned FROM workload, assignment
-						WHERE workload.wstatus='$status' and workload.wid=assignment.assignment_id");
+						WHERE workload.wstatus='$status' and workload.wid=assignment.assignment_id and workload.wtime like '%$date%'");
   while($row=mysql_fetch_object($result)) {
 	$data[$row->id]['ID']=$row->id;
 	$data[$row->id]['DESCRIPTION']=$row->descr;
 	$data[$row->id]['CLIENT']=$row->client;
 	$data[$row->id]['DATE AND TIME']=$row->time;
 	$data[$row->id]['ASSIGNED TO']=$row->assigned;
-	$data[$row->id]['TOTAL']='';
+	$data[$row->id]['TOTAL TRANSACTIONS']='';
   }
   }
   else if($status=='all'){
@@ -52,12 +53,12 @@
 	$data[$row->id]['DESCRIPTION']=$row->descr;
 	$data[$row->id]['CLIENT']=$row->client;
 	$data[$row->id]['DATE AND TIME']=$row->time;
-	$data[$row->id]['TOTAL']='';
+	$data[$row->id]['TOTAL TRANSACTIONS']='';
   }
   }
   
   $data['']['ID'] = '';
-  $data['TOTAL']['ID'] = 'TOTAL';
+  $data['TOTAL TRANSACTIONS']['ID'] = 'TOTAL TRANSACTIONS';
   
 	$search = mysql_query("select cname from crew where cid='$id'");
 	while($row = mysql_fetch_object($search)){
@@ -72,10 +73,10 @@
   //Get the sum of the last column named 'Total'
   $coltotal = 0; 
   $totalwork = mysql_num_rows($result);
-    $data['TOTAL']['TOTAL']=$totalwork;
+    $data['TOTAL TRANSACTIONS']['TOTAL TRANSACTIONS']=$totalwork;
 
   $pdf->ezTable($data,"","",array('width'=>600,
-                                  'cols'=>array('TOTAL'=>array('justification'=>right))));
+                                  'cols'=>array('TOTAL TRANSACTIONS'=>array('justification'=>right))));
  // $pdf->ezText('',12);
  // $pdf->ezText('',12);
  // $pdf->ezText('',12);
